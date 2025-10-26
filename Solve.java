@@ -106,14 +106,21 @@ public class Solve {
     final <T> String mapArgsNameWithValue(String sep, String[] names, T[] values) {
       if (names.length == 0 || values.length == 0) return "";
       StringBuilder res = new StringBuilder();
-      for (int i = 0; i < values.length; i++) {
+      for (int i = 0; i < values.length - 1; i++) {
         res.append(
             mapKeyValue(
                     (names.length == 1 && values.length > 1 ? names[0] + "[" + i + "]" : names[i])
                         + sep,
                     values[i])
-                + (i == values.length - 1 ? "" : ", "));
+                + ", ");
       }
+      res.append(
+          mapKeyValue(
+              (names.length == 1 && values.length > 1
+                      ? names[0] + "[" + (values.length - 1) + "]"
+                      : names[names.length - 1])
+                  + sep,
+              values[values.length - 1]));
       return res.toString();
     }
 
@@ -121,7 +128,7 @@ public class Solve {
       if (val instanceof Object[]) {
         return Arrays.toString((Object[]) val);
       }
-      return val == null ? "null" : val.toString();
+      return val.toString();
     }
 
     <T> String getColorStr(T s, String clr) {
@@ -206,20 +213,20 @@ public class Solve {
   public static void postT(Scanner in) {}
 
   public static void solver(int z, Scanner in) {
-    int n = in.nextInt(), k = in.nextInt(), d = in.nextInt(), w = in.nextInt(), packs = 0;
-    Integer[] t = new Integer[n];
-    // debugln(n, k, d, w, t);
-    for (int i = 0, does = k, pack_open = -1, wait_start = -1, patient = -1; i < t.length; i++) {
-      t[i] = in.nextInt();
-      if (wait_start == -1) {
-        wait_start = t[i];
-        patient = i;
-      } else if (wait_start + w < t[i]) {
-        pack_open = wait_start + w;
-        packs++;
-        does = i;
-      }
+    int len = in.nextInt(), ans = 0;
+    in.nextLine();
+    String s = in.nextLine();
+    HashMap<Character, Integer> o = new HashMap<>();
+    HashMap<Character, Integer> o2 = new HashMap<>();
+    for (int i = 0; i < len; i++) {
+      o.put(s.charAt(i), o.getOrDefault(s.charAt(i), 0) + 1);
     }
-    debugln(t);
+    for (int i = 0; i < len - 1; i++) {
+      o2.put(s.charAt(i), o2.getOrDefault(s.charAt(i), 0) + 1);
+      o.put(s.charAt(i), o.get(s.charAt(i)) - 1);
+      if (o.get(s.charAt(i)) == 0) o.remove(s.charAt(i));
+      ans = Math.max(ans, o.size() + o2.size());
+    }
+    System.out.println(ans);
   }
 }

@@ -93,8 +93,8 @@ public class Checker {
       String t1, t2;
       int t = test.nextInt();
       for (int i = 0; in.hasNextLine() && ans.hasNextLine(); i++) {
-        t1 = in.nextLine();
-        t2 = ans.nextLine();
+        t1 = in.nextLine().trim();
+        t2 = ans.nextLine().trim();
         printResult(t1, t2, t1.equals(t2));
       }
     }
