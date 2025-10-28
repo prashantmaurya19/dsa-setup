@@ -1,4 +1,5 @@
 *.vim
 Solve.java
 .history_links
+*.txt
 
