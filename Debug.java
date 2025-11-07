@@ -34,21 +34,23 @@ public class Debug {
   static String ARGS_COLOR = CYAN;
   static String VALUE_COLOR = YELLOW;
 
-  final HashMap<Character, Character> brakets = new HashMap<>();
-  final HashMap<String, LinkedList<String>> cache = new HashMap<>();
+  static final HashMap<Character, Character> brakets = new HashMap<>();
+  static final HashMap<String, LinkedList<String>> cache = new HashMap<>();
   StackTraceElement pointer;
-  final String[] solve_lines;
+  static String[] solve_lines = init();
 
-  Debug() {
+  private Debug() {}
+
+  static String[] init() {
     brakets.put(')', '(');
     brakets.put(']', '[');
     brakets.put('}', '{');
     brakets.put('\'', '\'');
     brakets.put('"', '"');
-    solve_lines = getLines();
+    return getLines();
   }
 
-  void test(String... a) {
+  static void test(String... a) {
     String[] lines = getLines();
     // Line 10: Create an exception to get the stack trace
     StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -73,7 +75,7 @@ public class Debug {
   }
 
   @SafeVarargs
-  final <T> String _debug(T... args) {
+  static final <T> String _debug(T... args) {
     Exception e = new Exception();
     StackTraceElement[] stackTrace = e.getStackTrace();
     int ln = 0;
@@ -97,12 +99,12 @@ public class Debug {
         + "]";
   }
 
-  final <T> String mapKeyValue(String key, T val) {
+  static final <T> String mapKeyValue(String key, T val) {
 
     return getColorStr(key, ARGS_COLOR) + getColorStr(toValue(val), VALUE_COLOR);
   }
 
-  final <T> String mapArgsNameWithValue(String sep, String[] names, T[] values) {
+  static final <T> String mapArgsNameWithValue(String sep, String[] names, T[] values) {
     if (names.length == 0 || values.length == 0) return "";
     StringBuilder res = new StringBuilder();
     for (int i = 0; i < values.length - 1; i++) {
@@ -123,18 +125,18 @@ public class Debug {
     return res.toString();
   }
 
-  <T> String toValue(T val) {
+  static <T> String toValue(T val) {
     if (val instanceof Object[]) {
       return Arrays.toString((Object[]) val);
     }
     return val.toString();
   }
 
-  <T> String getColorStr(T s, String clr) {
+  static <T> String getColorStr(T s, String clr) {
     return clr + s + RESET;
   }
 
-  LinkedList<String> parseStatement(String statement) {
+  static LinkedList<String> parseStatement(String statement) {
     if (cache.containsKey(statement)) return cache.get(statement);
     Stack<Character> braket = new Stack<>();
     LinkedList<String> args = new LinkedList<>();
@@ -158,7 +160,7 @@ public class Debug {
     return args;
   }
 
-  String getStatement(String line) {
+  static String getStatement(String line) {
     int l = 0, r = line.length() - 1;
     while (l < line.length()) {
       if (line.charAt(l) == '(') break;
@@ -171,7 +173,7 @@ public class Debug {
     return line.substring(l + 1, r);
   }
 
-  String[] getLines() {
+  static String[] getLines() {
     Path filePath = Paths.get("Solve.java");
     try {
       List<String> lines = Files.readAllLines(filePath);
@@ -179,5 +181,15 @@ public class Debug {
     } catch (Exception e) {
       return new String[] {};
     }
+  }
+
+  @SafeVarargs
+  public static <T> void debug(T... args) {
+    System.out.print(_debug(args));
+  }
+
+  @SafeVarargs
+  static <T> void debugln(T... args) {
+    System.out.println(_debug(args));
   }
 }

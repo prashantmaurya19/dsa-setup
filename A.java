@@ -1,20 +1,20 @@
 import java.util.Scanner;
 
-public class Solve {
+public class A {
 
   // @debug
-  static final Debug _debuggerpm = new Debug();
-
-  @SafeVarargs
-  static <T> void debug(T... args) {
-    System.out.print(_debuggerpm._debug(args));
-  }
-
-  @SafeVarargs
-  static <T> void debugln(T... args) {
-    System.out.println(_debuggerpm._debug(args));
-  }
-
+//  static final Debug _debuggerpm = new Debug();
+//
+//  @SafeVarargs
+//  static <T> void debug(T... args) {
+//    System.out.print(_debuggerpm._debug(args));
+//  }
+//
+//  @SafeVarargs
+//  static <T> void debugln(T... args) {
+//    System.out.println(_debuggerpm._debug(args));
+//  }
+//
   // @debugend
 
   static void takeArrayInput(Integer[] a, Scanner in) {
@@ -41,6 +41,10 @@ public class Solve {
   public static void postT(Scanner in) {}
 
   public static void solver(Scanner in) {
-
+    int n = in.nextInt(), mx = Integer.MIN_VALUE;
+    for (int i = 0; i < n; i++) {
+      mx = Math.max(mx, in.nextInt());
+    }
+    System.out.println(mx < in.nextInt() ? "NO" : "YES");
   }
 }

@@ -28,15 +28,26 @@ const page = await browser.newPage();
 await page.goto(link);
 
 await page.setViewport({ width: 1080, height: 1024 });
-// await sleep(10000);
-// const
-const { input, output } = await page.evaluate(() => {
-  return {
-    input: document.querySelector(".input pre").innerText,
-    output: document.querySelector(".output pre").innerText,
-  };
-});
 
+try {
+  const { input, output } = await page.evaluate(() => {
+    return {
+      input: document.querySelector(".input pre").innerText,
+      output: document.querySelector(".output pre").innerText,
+    };
+  });
+} catch {
+  const page1 = await browser.newPage();
+  await page.goto(link);
+
+  await page.setViewport({ width: 1080, height: 1024 });
+  const { input, output } = await page.evaluate(() => {
+    return {
+      input: document.querySelector(".input pre").innerText,
+      output: document.querySelector(".output pre").innerText,
+    };
+  });
+}
 await writeFile("answer.txt", output);
 await writeFile("testcase.txt", input);
 
