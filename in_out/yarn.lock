@@ -322,6 +322,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^17.2.3":
+  version: 17.2.3
+  resolution: "dotenv@npm:17.2.3"
+  checksum: 10c0/c884403209f713214a1b64d4d1defa4934c2aa5b0002f5a670ae298a51e3c3ad3ba79dfee2f8df49f01ae74290fcd9acdb1ab1d09c7bfb42b539036108bb2ba0
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^10.3.0":
   version: 10.5.0
   resolution: "emoji-regex@npm:10.5.0"
@@ -520,6 +527,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "in_out@workspace:."
   dependencies:
+    dotenv: "npm:^17.2.3"
     puppeteer: "npm:^24.23.0"
     yargs: "npm:^18.0.0"
   languageName: unknown
