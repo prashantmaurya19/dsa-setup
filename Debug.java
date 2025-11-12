@@ -80,8 +80,6 @@ public class Debug {
     StackTraceElement[] stackTrace = e.getStackTrace();
     int ln = 0;
     for (int i = 0; i < stackTrace.length; i++) {
-      // System.out.println(
-      // i + " " + stackTrace[i].getMethodName() + " " + stackTrace[i].getLineNumber());
       if (stackTrace[i].getMethodName().equals("debug")
           || stackTrace[i].getMethodName().equals("debugln")) {
         ln = stackTrace[i + 1].getLineNumber();

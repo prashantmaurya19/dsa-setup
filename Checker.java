@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Checker {
@@ -23,6 +24,10 @@ public class Checker {
   static int count = 0;
   static int pass_count = 0;
   static int fail_count = 0;
+  static int MAX_ANS_LEN = 0;
+  static ArrayList<String> result_out = new ArrayList<>();
+  static ArrayList<String> result_ans = new ArrayList<>();
+  static ArrayList<Boolean> result = new ArrayList<>();
 
   static <T> String getColorStr(T s, String clr) {
     return clr + s + RESET;
@@ -95,26 +100,55 @@ public class Checker {
       for (int i = 0; in.hasNextLine() && ans.hasNextLine(); i++) {
         t1 = in.nextLine().trim();
         t2 = ans.nextLine().trim();
-        printResult(t1, t2, t1.equals(t2));
+        addResult(t1, t2, t1.equals(t2));
       }
     }
   }
 
-  public static <T> void printResult(T out, T ans, boolean pass) {
+  public static <T> void addResult(T out, T ans, boolean pass) {
     count++;
-    System.out.println(
-        count
-            + ": "
-            + (pass ? GREEN_LIGHT : RED_LIGHT)
-            + Util.truncate(out + "", 18)
-            + RESET
-            + " | "
-            + Util.truncate(ans + "", 18)
-            + (pass ? GREEN_LIGHT : RED_LIGHT)
-            + (pass ? " " : " ")
-            + RESET);
+    result_ans.add("" + ans);
+    result_out.add("" + out);
+    result.add(pass);
+    MAX_ANS_LEN = Math.max(MAX_ANS_LEN, result_out.getLast().length());
+    MAX_ANS_LEN = Math.max(MAX_ANS_LEN, result_ans.getLast().length());
     if (pass) pass_count++;
     else fail_count++;
+  }
+
+  public static String formatResult(String c, String out, String ans, boolean pass) {
+    return (c
+        + ": "
+        + (pass ? GREEN_LIGHT : RED_LIGHT)
+        + Util.truncate(out + "", MAX_ANS_LEN)
+        + RESET
+        + " | "
+        + Util.truncate(ans + "", MAX_ANS_LEN)
+        + (pass ? GREEN_LIGHT : RED_LIGHT)
+        + (pass ? " " : " ")
+        + RESET);
+  }
+
+  public static int getNumLength(int num) {
+    return (int) Math.floor(Math.log10(num)) + 1;
+  }
+
+  public static void printAllResult() {
+    int PAD_INT = getNumLength(count + 1);
+
+    for (int i = 0; i < result.size(); i++) {
+      System.out.println(
+          formatResult(
+              Util.alignText(Util.TextAlignment.START, "" + (i + 1), PAD_INT - getNumLength(i + 1)),
+              result_out.get(i),
+              result_ans.get(i),
+              result.get(i)));
+    }
+    System.out.println(
+        getColorStr("pass: " + pass_count, GREEN_LIGHT)
+            + (fail_count == 0 ? "" : getColorStr(" fail: " + fail_count, RED_LIGHT))
+            + " "
+            + getColorStr(fail_count == 0 ? "" : "", fail_count == 0 ? GREEN_LIGHT : RED_LIGHT));
   }
 
   public static void main(String[] args) {
@@ -125,12 +159,7 @@ public class Checker {
       Scanner ans = new Scanner(ans_file);
       Scanner in = new Scanner(System.in);
       CheckHanders.sameLine(tin, in, ans);
-      System.out.println(
-          getColorStr("pass: " + pass_count, GREEN_LIGHT)
-              + (fail_count == 0 ? "" : getColorStr(" fail: " + fail_count, RED_LIGHT))
-              + " "
-              + getColorStr(
-                  fail_count == 0 ? "" : "", fail_count == 0 ? GREEN_LIGHT : RED_LIGHT));
+      printAllResult();
     } catch (Exception e) {
       System.out.println(e);
     }
