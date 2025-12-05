@@ -1,4 +1,6 @@
-if [ "$1" == "" ]; then
+if [ "$1" == "quick" ]; then
+  cat ./in_out/scratchpad.txt | java Solve.java
+elif [ "$1" == "" ]; then
   cat ./in_out/testcase.txt | java Solve.java
 elif [ "$1" == "save" ]; then
   cp ./Solve.java ./"$2.java"

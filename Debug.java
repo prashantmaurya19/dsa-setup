@@ -105,27 +105,24 @@ public class Debug {
   static final <T> String mapArgsNameWithValue(String sep, String[] names, T[] values) {
     if (names.length == 0 || values.length == 0) return "";
     StringBuilder res = new StringBuilder();
-    for (int i = 0; i < values.length - 1; i++) {
+    for (int i = 0; i < values.length; i++) {
       res.append(
           mapKeyValue(
                   (names.length == 1 && values.length > 1 ? names[0] + "[" + i + "]" : names[i])
                       + sep,
                   values[i])
-              + ", ");
+              + (i < values.length - 1 ? ", " : ""));
     }
-    res.append(
-        mapKeyValue(
-            (names.length == 1 && values.length > 1
-                    ? names[0] + "[" + (values.length - 1) + "]"
-                    : names[names.length - 1])
-                + sep,
-            values[values.length - 1]));
     return res.toString();
   }
 
   static <T> String toValue(T val) {
     if (val instanceof Object[]) {
       return Arrays.toString((Object[]) val);
+    } else if (val instanceof int[]) {
+      return Arrays.toString((int[]) val);
+    } else if (val instanceof char[]) {
+      return Arrays.toString((char[]) val);
     }
     return val.toString();
   }
