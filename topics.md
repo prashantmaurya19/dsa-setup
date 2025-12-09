@@ -4,8 +4,8 @@
 - [x] linkedlist
 - [x] string
 - [x] bit manipulation
-- [ ] mathamatical
-- [ ] recursion
+- [x] mathamatical
+- [x] recursion ( intermidiate )
 - [ ] backtracking
 - [ ] sorting
 - [ ] hash
